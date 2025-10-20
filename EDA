@@ -1,0 +1,17 @@
+Stage 1 - Collect and clean multiyear NYC data from 2017-2024 (leaving out 2020-22 data during COVID years, so the model could generalize well)
+
+Data Range : 1/1/2017 to 12/31/2024
+Data Source : NYC DOHMH EpiQuery Syndromic Surveillance
+-Respiratory
+Respiratory includes ED chief complaint mention of bronchitis, chest cold, chest congestion, chest pain, cough, difficulty breathing, pneumonia, shortness of breath, and upper respiratory infection.
+-Asthama
+Asthma includes ED chief complaint mention of asthma, wheezing, airway, or chronic obstructive pulmonary disorder (COPD).
+
+Data Source : NOAA NCEI Climate Data Online (CDO) API
+https://www.ncei.noaa.gov/access/services/data/v1 
+NOAA doesn't organize weather data by NYC boroughs - weather stations are point locations. You'll need to:
+Find weather stations in each borough (Manhattan, Brooklyn, Queens, Bronx, Staten Island) > Query data for each station separately > The stations may not align perfectly with borough boundaries
+
+Data Source : NYC Open Data
+1. Air QUality: https://data.cityofnewyork.us/Environment/Air-Quality/c3uy-2p5r/about_data
+
