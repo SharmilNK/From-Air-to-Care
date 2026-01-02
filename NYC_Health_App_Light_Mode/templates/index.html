@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NYC Health Prediction System</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <h1 class="title">🏥 NYC Health Prediction System</h1>
+                <p class="subtitle">AI-Powered Respiratory & Asthma Hospitalization Forecasting</p>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Input Card -->
+            <div class="card input-card">
+                <h2 class="card-title">Make a Prediction</h2>
+                <p class="card-description">Select a date and borough to predict hospitalization risk</p>
+                
+                <form id="predictionForm" class="prediction-form">
+                    <div class="form-group">
+                        <label for="date" class="form-label">
+                            📅 Date
+                        </label>
+                        <input 
+                            type="date" 
+                            id="date" 
+                            name="date" 
+                            class="form-input"
+                            required
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label for="borough" class="form-label">
+                            📍 Borough
+                        </label>
+                        <select id="borough" name="borough" class="form-input" required>
+                            <option value="">Select a borough...</option>
+                            <option value="manhattan">Manhattan</option>
+                            <option value="brooklyn">Brooklyn</option>
+                            <option value="queens">Queens</option>
+                            <option value="bronx">Bronx</option>
+                            <option value="staten island">Staten Island</option>
+                        </select>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary" id="predictBtn">
+                        <span class="btn-text">Predict</span>
+                        <span class="btn-loading" style="display: none;">
+                            <span class="spinner"></span> Analyzing...
+                        </span>
+                    </button>
+                </form>
+            </div>
+
+            <!-- Results Card -->
+            <div class="card results-card" id="resultsCard" style="display: none;">
+                <h2 class="card-title">Prediction Results</h2>
+                
+                <div class="results-header">
+                    <div class="result-location">
+                        <span class="location-icon">📍</span>
+                        <span id="resultBorough">Brooklyn</span>
+                    </div>
+                    <div class="result-date">
+                        <span class="date-icon">📅</span>
+                        <span id="resultDate">January 15, 2024</span>
+                    </div>
+                </div>
+
+                <div class="results-grid">
+                    <!-- Risk Level Card -->
+                    <div class="metric-card risk-card" id="riskCard">
+                        <div class="metric-header">
+                            <span class="metric-icon">⚠️</span>
+                            <h3 class="metric-title">Risk Level</h3>
+                        </div>
+                        <div class="metric-value" id="riskLevel">Moderate</div>
+                        <div class="metric-detail">
+                            <span class="metric-label">Probability:</span>
+                            <span class="metric-number" id="riskProbability">65%</span>
+                        </div>
+                        <div class="risk-bar">
+                            <div class="risk-bar-fill" id="riskBarFill" style="width: 65%"></div>
+                        </div>
+                    </div>
+
+                    <!-- Expected Admissions Card -->
+                    <div class="metric-card admissions-card">
+                        <div class="metric-header">
+                            <span class="metric-icon">🏥</span>
+                            <h3 class="metric-title">Expected Admissions</h3>
+                        </div>
+                        <div class="metric-value" id="expectedAdmissions">85</div>
+                        <div class="metric-detail">
+                            <span class="metric-label">Predicted count for the day</span>
+                        </div>
+                    </div>
+
+                    <!-- Historical Average Card -->
+                    <div class="metric-card historical-card">
+                        <div class="metric-header">
+                            <span class="metric-icon">📊</span>
+                            <h3 class="metric-title">Historical Average</h3>
+                        </div>
+                        <div class="metric-value" id="historicalAverage">78</div>
+                        <div class="metric-detail">
+                            <span class="metric-label">Similar dates average</span>
+                        </div>
+                        <div class="comparison" id="comparison">
+                            <span class="comparison-label">vs Prediction:</span>
+                            <span class="comparison-value" id="comparisonValue">+9%</span>
+                        </div>
+                    </div>
+
+                    <!-- Confidence Card -->
+                    <div class="metric-card confidence-card">
+                        <div class="metric-header">
+                            <span class="metric-icon">🎯</span>
+                            <h3 class="metric-title">Confidence</h3>
+                        </div>
+                        <div class="metric-value small" id="confidenceLevel">High</div>
+                        <div class="metric-detail">
+                            <span class="metric-label" id="confidenceDetail">ML Model Prediction</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Interpretation Section -->
+                <div class="interpretation-section">
+                    <h3 class="interpretation-title">💡 What This Means</h3>
+                    <div class="interpretation-content" id="interpretationContent">
+                        <p>Based on weather patterns, air quality, and historical data, we expect moderate hospitalization risk for this date and location.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Info Cards -->
+            <div class="info-grid">
+                <div class="info-card">
+                    <div class="info-icon">🌡️</div>
+                    <h3 class="info-title">Weather Impact</h3>
+                    <p class="info-text">Temperature, humidity, and precipitation affect respiratory health</p>
+                </div>
+
+                <div class="info-card">
+                    <div class="info-icon">💨</div>
+                    <h3 class="info-title">Air Quality</h3>
+                    <p class="info-text">PM2.5, ozone, and other pollutants influence admission rates</p>
+                </div>
+
+                <div class="info-card">
+                    <div class="info-icon">📈</div>
+                    <h3 class="info-title">ML Models</h3>
+                    <p class="info-text">Gradient Boosting and Random Forest for accurate predictions</p>
+                </div>
+
+                <div class="info-card">
+                    <div class="info-icon">🗓️</div>
+                    <h3 class="info-title">Historical Data</h3>
+                    <p class="info-text">2017-2024 NYC health records across all boroughs</p>
+                </div>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p class="footer-text">NYC Health Prediction System | Duke University Alternative Data Project 2024</p>
+            <p class="footer-subtext">Data sources: NYC OpenData, NOAA Weather, EPA Air Quality</p>
+        </footer>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>
