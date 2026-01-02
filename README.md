@@ -40,7 +40,7 @@ MAE (Mean Absolute Error): ±59.7 patients
 
 1. Clone the Repository
    
-git clone https://github.com/your-username/patient-volume-prediction.git
+git clone https://github.com/SharmilNK/From-Air-to-Care.git
 cd From-Air-to-Care
 
 2. Create & Activate a Virtual Environment (Recommended)
